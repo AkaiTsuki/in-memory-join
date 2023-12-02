@@ -6,7 +6,11 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JoinInMemory {
+    String keyFromSourceData();
+
     String loader();
+
+    String keyFromJoinData();
 
     String converter();
 }

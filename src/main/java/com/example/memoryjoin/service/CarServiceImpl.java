@@ -14,6 +14,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,7 +61,7 @@ public class CarServiceImpl implements CarService {
         CarDetailDTO carDetailDTO = new CarDetailDTO();
         carDetailDTO.setCar(carDTO);
 
-        joinInMemoryExecutor.fetch(carDetailDTO, CarDetailDTO.class);
+        joinInMemoryExecutor.batchFetch(Arrays.asList(carDetailDTO), CarDetailDTO.class);
 
         return carDetailDTO;
     }
@@ -92,12 +93,15 @@ public class CarServiceImpl implements CarService {
             return new ArrayList<>();
         }
 
-        return carDTOList.stream().map(carDTO -> {
+        List<Object> listDTO = carDTOList.stream().map(carDTO -> {
             CarListDTO carListDTO = new CarListDTO();
             carListDTO.setCar(carDTO);
-            joinInMemoryExecutor.fetch(carListDTO, CarListDTO.class);
             return carListDTO;
         }).collect(Collectors.toList());
+
+        joinInMemoryExecutor.batchFetch(listDTO, CarListDTO.class);
+
+        return listDTO.stream().map(dto -> (CarListDTO)dto).collect(Collectors.toList());
     }
 
 

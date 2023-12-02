@@ -7,4 +7,5 @@ public class ManufactureDTO {
     private Long id;
     private String name;
     private String factoryInfo;
+    private Long carId;
 }
