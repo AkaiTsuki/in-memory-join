@@ -9,11 +9,13 @@ import lombok.Data;
 public class CarDetailDTO {
     private CarDTO car;
     @JoinInMemory(
-            loader = "@manufactureService.findById(car.manufactureId)"
+            loader = "@manufactureService.findById(car.manufactureId)",
+            converter = "T(com.example.memoryjoin.util.ManufactureConverter).convert(#root)"
     )
-    private ManufactureDTO manufacture;
+    private ManufactureVO manufacture;
     @JoinInMemory(
-            loader = "@paymentService.findById(car.paymentId)"
+            loader = "@paymentService.findById(car.paymentId)",
+            converter = "T(com.example.memoryjoin.util.PaymentConverter).convert(#root)"
     )
-    private PaymentDTO payment;
+    private PaymentVO payment;
 }

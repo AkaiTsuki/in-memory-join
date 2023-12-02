@@ -29,8 +29,8 @@ public class JoinInMemoryExecutor {
             }
 
             ExpressionParser expressionParser = new SpelExpressionParser();
-            Class<?> clazz = field.getType();
             String loader = joinInMemory.loader();
+            String converter = joinInMemory.converter();
 
             StandardEvaluationContext context = new StandardEvaluationContext(root);
             context.setBeanResolver(new BeanFactoryResolver(applicationContext));
@@ -39,9 +39,15 @@ public class JoinInMemoryExecutor {
             Object result = expression.getValue(context);
             System.out.println(result);
 
+            StandardEvaluationContext converterContext = new StandardEvaluationContext(result);
+            converterContext.setBeanResolver(new BeanFactoryResolver(applicationContext));
+            Expression converterExpression = expressionParser.parseExpression(converter);
+            Object converterResult = converterExpression.getValue(converterContext);
+            System.out.println(converterResult);
+
             try {
                 field.setAccessible(true);
-                field.set(root, result);
+                field.set(root, converterResult);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

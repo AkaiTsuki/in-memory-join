@@ -6,6 +6,8 @@ import com.example.memoryjoin.model.car.CarDetailDTO;
 import com.example.memoryjoin.model.car.CarListDTO;
 import com.example.memoryjoin.model.payer.ManufactureDTO;
 import com.example.memoryjoin.model.payer.PaymentDTO;
+import com.example.memoryjoin.util.ManufactureConverter;
+import com.example.memoryjoin.util.PaymentConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -46,8 +48,8 @@ public class CarServiceImpl implements CarService {
 
         CarDetailDTO carDetailDTO = new CarDetailDTO();
         carDetailDTO.setCar(carDTO);
-        carDetailDTO.setManufacture(manufactureDTO);
-        carDetailDTO.setPayment(paymentDTO);
+        carDetailDTO.setManufacture(ManufactureConverter.convert(manufactureDTO));
+        carDetailDTO.setPayment(PaymentConverter.convert(paymentDTO));
 
         return carDetailDTO;
     }
@@ -77,7 +79,7 @@ public class CarServiceImpl implements CarService {
 
             CarListDTO carListDTO = new CarListDTO();
             carListDTO.setCar(carDTO);
-            carListDTO.setManufacture(manufactureDTO);
+            carListDTO.setManufacture(ManufactureConverter.convert(manufactureDTO));
 
             return carListDTO;
         }).collect(Collectors.toList());

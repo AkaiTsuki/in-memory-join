@@ -9,8 +9,9 @@ public class CarListDTO {
     private CarDTO car;
 
     @JoinInMemory(
-            loader = "@manufactureService.findById(car.manufactureId)"
+            loader = "@manufactureService.findById(car.manufactureId)",
+            converter = "T(com.example.memoryjoin.util.ManufactureConverter).convert(#root)"
     )
-    private ManufactureDTO manufacture;
+    private ManufactureVO manufacture;
 
 }
